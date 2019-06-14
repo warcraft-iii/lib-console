@@ -57,17 +57,23 @@ local function InitShortcuts()
     end
 end
 
-local orgPring = print
 local function AddText(text)
     if consoleTextArea then
         consoleTextArea:addText(text)
-    else
-        orgPring(text)
     end
 end
 
+local orgPrint = print
 _G.print = function(...)
-    AddText(table.concat({...}, " "))
+    if consoleTextArea then
+        local tbl = {...}
+        for i, v in ipairs(tbl) do
+            tbl[i] = tostring(v)
+        end
+        AddText(table.concat(tbl, " "))
+    else
+        orgPrint(...)
+    end
 end
 
 local function OnEditBoxEnter()
