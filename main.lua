@@ -1,5 +1,5 @@
 require("lib.oop")
-require("lib.oop.enum")
+require("lib.enum")
 
 local Native = require("lib.native.native")
 
