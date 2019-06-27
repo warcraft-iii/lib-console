@@ -1,7 +1,7 @@
-require("lib.oop")
-require("lib.enum")
+require("lib.stdlib.oop")
+require("lib.stdlib.enum")
 
-local Native = require("lib.native.native")
+local Native = require("lib.stdlib.native")
 
 ---@type Frame
 local console
