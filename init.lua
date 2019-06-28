@@ -1,2 +1,2 @@
 
-require('lib.console.main')
+require('lib.console.console')
