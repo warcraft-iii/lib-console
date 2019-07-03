@@ -2,6 +2,7 @@ local Native = require('lib.stdlib.native')
 local Frame = require('lib.stdlib.oop.frame')
 local Trigger = require('lib.stdlib.oop.trigger')
 local Event = require('lib.stdlib.oop.event')
+local Player = require('lib.stdlib.oop.player')
 
 local OriginFrameType = require('lib.stdlib.enum.originframetype')
 local FramePointType = require('lib.stdlib.enum.framepointtype')
@@ -69,7 +70,7 @@ function Console:initTrig()
     self.showTrig = Trigger:create()
     self.showTrig:registerAllPlayersKeyEvent(OsKeyType.F1, 4, true)
     self.showTrig:addAction(function()
-        if Native.GetTriggerPlayer() ~= Native.GetLocalPlayer() then
+        if Event:getTriggerPlayer() ~= Player:getLocal() then
             return
         end
         self:toggle()
@@ -78,7 +79,7 @@ function Console:initTrig()
     self.hideTrig = Trigger:create()
     self.hideTrig:registerAllPlayersKeyEvent(OsKeyType.Escape, 0, true)
     self.hideTrig:addAction(function()
-        if Native.GetTriggerPlayer() ~= Native.GetLocalPlayer() then
+        if Event:getTriggerPlayer() ~= Player:getLocal() then
             return
         end
         self.console:hide()
