@@ -17,6 +17,8 @@ function Console:init()
     self:initUi()
     self:initTrig()
     self:initHook()
+    self.history = {}
+    self.historyIndex = 0
 end
 
 function Console:initUi()
@@ -63,26 +65,39 @@ function Console:initTrig()
             return
         end
 
+        table.insert(self.history, 1, script)
+        self.historyIndex = 0
         self.editBox:setFocus()
         self.editBox:setText('')
     end)
 
     self.showTrig = Trigger:create()
-    self.showTrig:registerAllPlayersKeyEvent(OsKeyType.F1, 4, true)
+    self.showTrig:registerPlayerKeyEvent(Player:getLocal(), OsKeyType.F1, 4, true)
     self.showTrig:addAction(function()
-        if Event:getTriggerPlayer() ~= Player:getLocal() then
-            return
-        end
         self:toggle()
     end)
 
     self.hideTrig = Trigger:create()
-    self.hideTrig:registerAllPlayersKeyEvent(OsKeyType.Escape, 0, true)
+    self.hideTrig:registerPlayerKeyEvent(Player:getLocal(), OsKeyType.Escape, 0, true)
     self.hideTrig:addAction(function()
-        if Event:getTriggerPlayer() ~= Player:getLocal() then
+        self.console:hide()
+    end)
+
+    self.historyTrig = Trigger:create()
+    self.historyTrig:registerFrameEvent(self.editBox, FrameEventType.MouseWheel)
+    self.historyTrig:addAction(function()
+        if not Event:getTriggerPlayer():isLocal() then
             return
         end
-        self.console:hide()
+        if Event:getTriggerFrameValue() > 0 then
+            if self.historyIndex < #self.history then
+                self.historyIndex = self.historyIndex + 1
+                self.editBox:setText(self.history[self.historyIndex])
+            end
+        elseif self.historyIndex > 1 and #self.history > 0 then
+            self.historyIndex = self.historyIndex - 1
+            self.editBox:setText(self.history[self.historyIndex])
+        end
     end)
 end
 
