@@ -65,9 +65,15 @@ function Console:initTrig()
             return
         end
 
+        if script == 'cls' then
+            self.textArea:setText('')
+            self.editBox:setText('')
+            return
+        end
+
         local f, err = load(script)
         if not f then
-            self:addText(err)
+        self:addText(err)
             return
         end
         local ok, r = pcall(f)
@@ -162,6 +168,12 @@ function Console:initTrig()
     local process = function()
         local script = japi.DzFrameGetText(self.editBox)
         if not script or script:trim() == '' then
+            return
+        end
+
+        if script == 'cls' then
+            japi.DzFrameSetText(self.textArea, '')
+            japi.DzFrameSetText(self.editBox, '')
             return
         end
 
