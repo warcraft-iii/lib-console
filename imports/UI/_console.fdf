@@ -11,9 +11,8 @@ Frame "FRAME" "__console" {
         TextAreaLineHeight 0.01,
         TextAreaLineGap 0.0015,
         TextAreaInset 0.0,
-        TextAreaMaxLines 128,
+        TextAreaMaxLines 2048,
         
-
         SetAllPoints,
 
         TextAreaScrollBar "__consoleTextAreaScrollBar",
