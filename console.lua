@@ -228,12 +228,14 @@ end
 
 function Console:initHook()
     if self.textArea then
+        local orgPrint = print
         _G.print = function(...)
             local sb = {}
             for i = 1, select('#', ...) do
                 sb[i] = tostring(select(i, ...))
             end
             self:addText(table.concat(sb, '    '))
+            orgPrint(...)
         end
 
         if seterrorhandler then
