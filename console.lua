@@ -73,7 +73,7 @@ function Console:initTrig()
 
         local f, err = load(script)
         if not f then
-        self:addText(err)
+            self:addText(err)
             return
         end
         local ok, r = pcall(f)
@@ -210,19 +210,28 @@ function Console:initTrig()
         japi.DzFrameShow(self.console, false)
     end)
 
-    japi.DzFrameSetScriptByCode(self.editBox, FrameEvents.FRAME_MOUSE_WHEEL, function()
+    local function showHistory(up)
         if #self.history == 0 then
             return
         end
-        if japi.DzGetWheelDelta() > 0 then
+        if up then
             if self.historyIndex < #self.history then
                 self.historyIndex = self.historyIndex + 1
             end
-        elseif self.historyIndex > 1 and #self.history > 0 then
+        else
             self.historyIndex = self.historyIndex - 1
         end
-        japi.DzFrameSetText(self.editBox, self.history[self.historyIndex])
-    end, false)
+        japi.DzFrameSetText(self.editBox, self.history[self.historyIndex] or '')
+        if self.historyIndex < 1 then
+            self.historyIndex = 1
+        end
+    end
+    japi.DzTriggerRegisterKeyEventByCode(nil, OsKeyType.Up, 1, false, function()
+        showHistory(true)
+    end)
+    japi.DzTriggerRegisterKeyEventByCode(nil, OsKeyType.Down, 1, false, function()
+        showHistory(false)
+    end)
 end
 -- @end-classic@
 
